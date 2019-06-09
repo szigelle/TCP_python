@@ -1,26 +1,50 @@
 import socket
+import key_value
 
-def Main():
-    host = "127.0.0.1"
-    port = 5000
+def main():
+    HOST = "127.0.0.1"
+    PORT = 5009
 
-    mySocket = socket.socket()
-    mySocket.bind((host,port))
+    SOCKET = socket.socket()
+    SOCKET.bind((HOST, PORT))
 
-    mySocket.listen(1)
-    conn, addr = mySocket.accept()
-    print ("Server: Connection from " + str(addr))
-    data = conn.recv(1024).decode()
+    SOCKET.listen(1)
+    connection, address = SOCKET.accept()
+    print('SERVER: received connection from [{}]'.format(address))
+
+    data = connection.recv(1024).decode()
     if not data:
-        return
-    print ("Server: recv " + str(data))
+       return
+    print('...server recieved msg [{}]'.format(data))
+    data = 'Hello from SERVER'
+#    print('...server sending msg - [{}]'.format(data))
+    connection.send(data.encode())
 
-    data = "Hello from Server"
+# run key value store
+    while True:
+        data = connection.recv(1024).decode()
 
-    print ("Server: send " + str(data))
-    conn.send(data.encode())
+        if not data:
+            return
 
-    conn.close()
+        print('...after decoding data, data is: [{}]'.format(data))
+
+        print('... setting data equal to output of kvtest')
+        data = key_value.main(data)
+        print('... data after kvtest is [{}]'.format(data))
+
+
+        if data[0] is None:
+            print('... result of kvtest(data) is none')
+            connection.send(b'')
+            break
+
+        connection.send(data[1].encode())
+
+
+    connection.close()
+
+    print('...server has closed connection')
 
 if __name__ == '__main__':
-    Main()
+    main()

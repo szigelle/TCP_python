@@ -1,81 +1,84 @@
 import socket
 
-def main():
+# initialize Dictionary (key value store)
+DICT = {}
+key = value = None
 
-    if command == 'EXIT':
-        response = HANDLERS[command]
-    elif command == 'STORE':
-        response = HANDLERS[command]
-    elif command in (
-        'GET',
-        'DEL'
-            ):
-        response = HANDLERS[command](key)
-    elif command == 'PUT':
-        response = HANDLERS[command](key, value)
+def main(data):
+
+    print('...inside kvtest.main(), data is [{}]'.format(data))
+    print('inside kvtest.main()... dictionary is [{}]'.format(DICT))
+
+    if data.lower() == 'exit':
+        response = handle_exit()
+
+    elif data.lower() == 'store':
+        response = handle_store()
+
     else:
-        response (False, 'Unknown command type[{}]'.format(command))
+        try:
+            command, key = data.split(' ',1)
+        except ValueError:
+            return(True, 'invalid input, try again.')
 
-#    connection.sendall('{};{}'.format(response[0], response[1]))
-#    connection.close()
-
-# returns tumple containing command, key, optional value, optional value type
-def parse_message(data):
-    command, key, value, value_type = data.strip().split(';')
-    if value_type:
-#        if value_type == 'LIST':
-#            value = value.split(',')
-        if value_type == 'INT':
-            value = int(value)
+        print('... key is [{}]'.format(key))
+        if command.lower() == 'del':
+            response = handle_del(key)
+        elif command.lower() == 'get':
+            response = handle_get(key)
         else:
-            value = str(value)
-    else:
-        value = None
-    return (command, key, value)
+            try:
+                key, value = key.split()
+            except ValueError:
+                return(True, 'invalid input, try again.')
+
+            print('... value is [{}]'.format(value))
+
+            if command.lower() == 'put':
+                response = handle_put(key, value)
+
+            else:
+                response = (True, 'invalid input, try again')
+
+    return(response)
 
 # OPERATION HANDLERS
 # return tuple containing true and msg to send to client
+def handle_store():
+    print('...inside handle_store')
+    print('inside kvtest.main().handle_store()... dictionary is [{}]'.format(DICT))
+
+    return(True, 'contents of key-velue store is [{}]'.format(DICT))
+
 def handle_put(key, value):
+
     DICT[key] = value
+    print('...inside handle_put, DICT is [{}]'.format(DICT))
+
     return (True, 'Key [{}] set to [{}]'.format(key, value))
 
-# return tuple containing true if key exists, and msg to send to client
 def handle_get(key):
+    print('...inside handle_get, key is [{}]'.format(key))
     if key not in DICT:
-        return(False, 'ERROR: Key [{}] not found'.format(key))
-    else:
-        return(True, DICT[key])
+        return (False, 'ERROR: key [{}] not found'.format(key))
 
-# return tumple containing true of key could be deleted, and msg
+    else:
+        return(True, 'value is [{}]'.format(DICT[key]))
+
+
+
 def handle_del(key):
+
+   print('...inside handle_del, key is [{}]'.format(key))
    if key not in DICT:
-       return (False, 'ERROR: Key [{}] not found, not deleted'.format(key))
+       return (False, 'ERROR: key [{}] not found, no deletion'.format(key))
+
    else:
        del DICT[key]
+       return(True, 'Key [{}] deleted'.format(key))
 
-# return tuple containing true, and msg to client containing all key-value pairs in data
-# TRUNCATE?
-def handle_store():
-    print("Your stored data: ")
-    return(True, DICT)
-
-# returns tuple containing true, and msg to client stating connection to server shutting down
-#def handle_exit():
-#    return(True, '...EXITING SERVER')
-
-key = value = 0
-
-# Initialize Dictionary (key value store)
-DICT = {}
-
-# OPERATION LOOKUP
-HANDLERS = {
-    'PUT': handle_put(key, value),
-    'GET': handle_get(key),
-    'DEL': handle_del(key),
-    'STORE': handle_store(),
-#    'EXIT': handle_exit(),
-    }
+def handle_exit():
+    return (None, 'Exiting key value store')
 
 if __name__ == '__main__':
-    main()
+    main(data)
