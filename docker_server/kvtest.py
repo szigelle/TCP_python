@@ -1,6 +1,6 @@
 import socket
 
-def main():
+def main(command):
 
     if command == 'EXIT':
         response = HANDLERS[command]
@@ -42,6 +42,9 @@ def handle_del(key):
    else:
        del DICT[key]
 
+def handle_exit():
+    return
+
 # initialize key and value
 key = value = 0
 
@@ -56,4 +59,4 @@ HANDLERS = {
     }
 
 if __name__ == '__main__':
-    main()
+    main(command)
