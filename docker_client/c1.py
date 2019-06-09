@@ -1,21 +1,25 @@
 import socket
 
 def main():
+# server hostname or ip
     HOST = '127.0.0.1'
-    PORT = 5000
+
+# port used by server
+    PORT = 5001
 
     SOCKET = socket.socket()
     SOCKET.connect((HOST, PORT))
 
-    message = "Hello from CLIENT!"
+    data = 'Hello from CLIENT!'
 
-    print('CLIENT: sending msg - [{}]'.format(message))
+    print('...client sending msg - [{}]'.format(data))
+#    SOCKET.send((data.encode())
+    SOCKET.sendall(data.encode())
 
-    SOCKET.send(message.encode())
-    message = SOCKET.recv(1024).decode()
+#    data = SOCKET.recv(1024).decode()
+    data = SOCKET.recv(1024).decode()
 
-    print('CLIENT: msg received from SERVER - [{}]'.format(message))
-
+    print('CLIENT: msg received from SERVER - [{}]'.format(data))
 # Connect has been established and acknowledged by both
 # prompt user for input
 #    message = input("Enter [COMMAND][,key] [,value]: ")
