@@ -3,21 +3,26 @@ import socket
 def main(data):
     if data.lower() == 'exit':
         response = HANDLERS[data.lower()]
-
-    elif not data.split():
-        return(True, 'invalid input, try again.')
-
+ 
     else:
-        command, key = data.split(' ',1)
+        try:
+            command, key = data.split(' ',1)
+        except ValueError:
+            return(True, 'invalid input, try again.')
 
         if command.lower() == 'del':
             response = handle_del(key)
 
-        elif command.lower() == 'put':
-            key, value = key.split()
-            response = handle_put(key, value)
         else:
-            response = (False, 'Unknown command type [{}]'.format(command))
+            try:
+                key, value = key.split()
+                response = handle_put(key, value)
+            except ValueError:
+                return(True, 'invalid input, try again.')
+            if command.lower() == 'put':
+                response = handle_put(key, value)
+            else:
+                return(True, 'invalid input, try again.')
     return(response)
 
 # initialize Dictionary (key value store)

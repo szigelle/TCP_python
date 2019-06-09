@@ -5,7 +5,7 @@ def main():
     HOST = '127.0.0.1'
 
 # port used by server
-    PORT = 5003
+    PORT = 5009
 
     SOCKET = socket.socket()
     SOCKET.connect((HOST, PORT))
@@ -22,13 +22,13 @@ def main():
 # Connect has been established and acknowledged by both
 # prompt user for input
     while True:
-        data = input("Enter [COMMAND][,key] [,value]: ")
+        data = input("Enter [command] [key] [value]: ")
 
         SOCKET.sendall(data.encode())
         data = SOCKET.recv(1024).decode()
         if not data:
             break
-        print('...client received msg [{}]'.format(data))
+        print('CLIENT: msg received from SERVER - [{}]'.format(data))
 
 # keep a loop until server closes the connection
     SOCKET.close()

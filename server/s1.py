@@ -3,7 +3,7 @@ import kvtest.py
 
 def main():
     HOST = "127.0.0.1"
-    PORT = 5001
+    PORT = 5004
 
     SOCKET = socket.socket()
     SOCKET.bind((HOST, PORT))
