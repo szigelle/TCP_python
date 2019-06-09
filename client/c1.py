@@ -20,6 +20,7 @@ def main():
     data = SOCKET.recv(1024).decode()
 
     print('CLIENT: msg received from SERVER - [{}]'.format(data))
+
 # Connect has been established and acknowledged by both
 # prompt user for input
 #    message = input("Enter [COMMAND][,key] [,value]: ")
@@ -28,6 +29,9 @@ def main():
 #    print('CLIENT: msg received from SERVER - [{}]'.format(message))
 # keep a loop until server closes the connection
 
+
+
+    print('begin key value store================================')
     SOCKET.close()
 
     print('... Client has closed socket')
