@@ -20,10 +20,12 @@ def main():
     message = "Hello from SERVER"
 
     print('SERVER: send msg - [{}]'.format(message))
+    connection.send(message.encode())
 
-    connection.send(data.encode())
-
+    connection.shutdown()
     connection.close()
+
+    print('...SERVER has closed connection')
 
 if __name__ == '__main__':
     main()

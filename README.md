@@ -5,3 +5,4 @@
 
 
 HANDLERS - Lookup table for operations: put, get, del, store, exit
+DATA - dictionary containing key value

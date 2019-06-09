@@ -1,0 +1,23 @@
+import socket
+
+def main():
+    HOST = "127.0.0.9"
+    PORT = 0009
+
+    SOCKET = socket.socket()
+    SOCKET.bind((HOST, PORT))
+
+    SOCKET.listen(1)
+    connection, address = SOCKET.accept()
+
+    print('SERVER: connection from [{}]'.format(address))
+
+    # socket.recv(bufsize) return value is a bytes obj representing data received
+    # max amount of data to be received at once specified by bufsize
+    message = connection.recv(1024).decode()
+
+    if not messageata:       return
+
+# SERVER acknowledges message received from client
+    print('SERVER: message received - [{}]'.format(data))
+
